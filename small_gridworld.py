@@ -92,7 +92,6 @@ def episode(p = False):
     done = False
     state = 1
     memory = []
-    memory2 = []
     
     while not done:
         action = eps_greedy(Q, 0.1, state)
@@ -108,32 +107,23 @@ def episode(p = False):
             
             
     for i in memory:
-        if i not in memory2:
-            pairs_visited[i] += 1
-            # alpha = (1/pairs_visited[i])
-            
-            alpha = 0.1
-            Q[i] = Q[i] + alpha * (reward - Q[i])
-            memory2.append(i)
+
+        pairs_visited[i] += 1
+        
+        #alpha = 0.01
+        alpha = (1/pairs_visited[i])
+
+        Q[i] = Q[i] + alpha * (reward - Q[i])
             
     if p == True:
         print(memory, reward)
         
 
-    
-# for i in range(100):
-#     print(i)
-#     if i%1 == 0:
-#         episode(True)
-#         pprint.pprint(Q, width = 1)
-#     else:
-#         episode()
 
-# eps = 1
 
 for i in range(100000):
     episode(False)
-#     # eps = 0.99**i
+
 
 pprint.pprint(Q, width = 1)
 
